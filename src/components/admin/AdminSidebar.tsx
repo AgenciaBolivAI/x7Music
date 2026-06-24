@@ -20,6 +20,7 @@ import {
   Brain,
   Gift,
   PenLine,
+  ScrollText,
   Settings,
   X,
 } from 'lucide-react';
@@ -35,6 +36,7 @@ const navItems = [
   { label: 'Artists',      to: '/admin/artists',      icon: Mic2 },
   { label: 'Split Sheets', to: '/admin/split-sheets', icon: FileSignature },
   { label: 'Agreements',   to: '/admin/agreements',   icon: PenLine },
+  { label: 'Doc Templates', to: '/admin/agreement-templates', icon: ScrollText },
   { label: 'Releases',     to: '/admin/releases',     icon: Music },
   { label: 'Events',       to: '/admin/events',       icon: Calendar },
   { label: 'Blog / Press', to: '/admin/blog',         icon: BookOpen },

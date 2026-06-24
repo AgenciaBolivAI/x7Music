@@ -139,8 +139,9 @@ export async function buildTemplatePdf(
         w.percentage != null ? `${w.percentage}` : '',
       ], false);
     }
+    y -= 18; // clear the table's bottom border before the total line
+    drawWrapped(`**Total:** ${Math.round(total * 100) / 100}%`, { size: 9.5, lineH: 14 });
     y -= 4;
-    drawWrapped(`**Total:** ${Math.round(total * 100) / 100}%`, { size: 9, lineH: 14 });
   };
 
   // ── Signature blocks ({{FIRMAS}}) ───────────────────────────────────────────
