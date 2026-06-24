@@ -13,6 +13,8 @@ export interface SignerInfo {
   name: string;
   email?: string | null;
   role?: string | null;
+  phone?: string | null;
+  address?: string | null;
   signatureData?: string | null; // data URL or bare base64 PNG
   signedName?: string | null;
   signedAt?: string | Date | null;

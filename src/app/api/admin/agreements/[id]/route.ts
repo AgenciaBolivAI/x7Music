@@ -50,6 +50,8 @@ export const PATCH = handler(async (req: Request, { params }: { params: { id: st
       name: s.name,
       email: s.email,
       role: s.role ?? null,
+      phone: s.phone ?? null,
+      address: s.address ?? null,
       sort_order: i,
     }));
     const { error } = await sb.from('agreement_signers').insert(rows);

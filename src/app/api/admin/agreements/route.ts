@@ -25,7 +25,7 @@ export const POST = handler(async (req: Request) => {
   const body = await req.json().catch(() => ({}));
   const parsed = agreementCreateSchema.safeParse(body);
   if (!parsed.success) return zodFail(parsed.error);
-  const { type, title, data, signers } = parsed.data;
+  const { type, templateId, title, data, signers } = parsed.data;
 
   // Soft guard: split-sheet writer percentages should total 100%.
   if (type === 'split_sheet' && Array.isArray((data as { writers?: unknown }).writers)) {
@@ -37,9 +37,19 @@ export const POST = handler(async (req: Request) => {
   }
 
   const sb = createClient();
+
+  // Snapshot the chosen template's body so later edits to the template never
+  // change an already-issued document.
+  let snapshotBody: string | null = null;
+  if (templateId) {
+    const { data: tpl } = await sb.from('agreement_templates').select('body').eq('id', templateId).maybeSingle();
+    if (!tpl) return fail('Template not found', 400);
+    snapshotBody = tpl.body as string;
+  }
+
   const { data: agreement, error } = await sb
     .from('agreements')
-    .insert({ type, title, data, created_by: auth.user.id })
+    .insert({ type, template_id: templateId ?? null, body: snapshotBody, title, data, created_by: auth.user.id })
     .select('*')
     .maybeSingle();
   if (error || !agreement) return fail(error?.message ?? 'Could not create agreement', 400);
@@ -50,6 +60,8 @@ export const POST = handler(async (req: Request) => {
     name: s.name,
     email: s.email,
     role: s.role ?? null,
+    phone: s.phone ?? null,
+    address: s.address ?? null,
     sort_order: i,
   }));
   const { data: inserted, error: sErr } = await sb

@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { z } from 'zod';
-import { buildAgreementPdf, type AgreementType, type SignerInfo } from '@/lib/pdf';
+import { buildAgreementPdf, buildTemplatePdf, type AgreementType, type SignerInfo } from '@/lib/pdf';
 
 /** Raw agreement_signers row (snake_case from Supabase). */
 export interface DbSigner {
@@ -8,6 +8,8 @@ export interface DbSigner {
   name: string;
   email: string;
   role: string | null;
+  phone: string | null;
+  address: string | null;
   sort_order: number;
   status: 'pending' | 'viewed' | 'signed';
   signature_data: string | null;
@@ -22,6 +24,8 @@ export interface DbAgreement {
   title: string;
   status: string;
   data: Record<string, unknown>;
+  body?: string | null;
+  template_id?: string | null;
   signers?: DbSigner[];
 }
 
@@ -33,6 +37,8 @@ export function signersToPdf(signers: DbSigner[] = []): SignerInfo[] {
       name: s.name,
       email: s.email,
       role: s.role,
+      phone: s.phone,
+      address: s.address,
       signatureData: s.signature_data,
       signedName: s.signed_name,
       signedAt: s.signed_at,
@@ -50,9 +56,15 @@ export async function loadAgreement(sb: SupabaseClient, id: string): Promise<DbA
   return (data as DbAgreement) ?? null;
 }
 
-/** Generate the PDF bytes for an agreement from its current data + signer state. */
+/** Generate the PDF bytes for an agreement. Uses the frozen template body when
+ * present (the editable-template path); falls back to the legacy built-in layout
+ * for older agreements created before templates existed. */
 export function renderAgreementPdf(agreement: DbAgreement): Promise<Uint8Array> {
-  return buildAgreementPdf(agreement.type, agreement.data, signersToPdf(agreement.signers ?? []));
+  const signers = signersToPdf(agreement.signers ?? []);
+  if (agreement.body && agreement.body.trim()) {
+    return buildTemplatePdf(agreement.body, agreement.data, signers);
+  }
+  return buildAgreementPdf(agreement.type, agreement.data, signers);
 }
 
 /** Safe filename for a downloaded/attached agreement PDF. */
@@ -67,10 +79,13 @@ export const signerInputSchema = z.object({
   name: z.string().min(1).max(200),
   email: z.string().email(),
   role: z.string().max(60).optional(),
+  phone: z.string().max(60).optional(),
+  address: z.string().max(300).optional(),
 });
 
 export const agreementCreateSchema = z.object({
   type: z.enum(['split_sheet', 'distribution_agreement']),
+  templateId: z.string().uuid().optional(),
   title: z.string().min(1).max(200),
   data: z.record(z.unknown()).default({}),
   signers: z.array(signerInputSchema).min(1).max(20),

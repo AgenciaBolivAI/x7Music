@@ -30,7 +30,7 @@ const ADMIN_CAPABILITIES = [
   '- Clients (/admin/clients) — directory + detail. Tools: list_clients, get_client.',
   '- Catalog (/admin/catalog) — registration tracking. Tools: list_catalog_all, update_catalog_status (emails the client).',
   '- Artists (/admin/artists) — profiles incl. PRO/IPI/publisher/contact that feed documents. Tools: list_artists, update_artist_profile (create new artists or upload photos on the page).',
-  '- Agreements (/admin/agreements) — split sheets + distribution agreements + e-signatures. Tools: list_agreements, get_agreement, create_agreement, send_agreement.',
+  '- Agreements (/admin/agreements) — split sheets + distribution agreements + native e-signatures, built from EDITABLE TEMPLATES (their full legal bodies live in /admin/agreement-templates). Tools: list_agreement_templates (call first to pick a template_id), create_agreement (pass that template_id so the correct legal body is used), list_agreements, get_agreement, send_agreement.',
   '- Split Sheets (/admin/split-sheets) — quick split-sheet PDFs.',
   '- Releases (/admin/releases) — Tools: list_content, create_release, set_publish_status.',
   '- Events (/admin/events) — Tools: list_content, create_event, set_publish_status.',

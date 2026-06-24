@@ -1,10 +1,11 @@
 import type { SignerInfo } from './shared';
 import { buildSplitSheetPdf, type SplitSheetData } from './splitSheet';
 import { buildDistributionAgreementPdf, type DistributionData } from './distributionAgreement';
+import { buildTemplatePdf, type TemplateWriter } from './template';
 
 export type AgreementType = 'split_sheet' | 'distribution_agreement';
-export type { SignerInfo, SplitSheetData, DistributionData };
-export { buildSplitSheetPdf, buildDistributionAgreementPdf };
+export type { SignerInfo, SplitSheetData, DistributionData, TemplateWriter };
+export { buildSplitSheetPdf, buildDistributionAgreementPdf, buildTemplatePdf };
 
 /** Human label per agreement type (for emails / UI / filenames). */
 export const AGREEMENT_LABELS: Record<AgreementType, string> = {

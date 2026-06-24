@@ -33,14 +33,58 @@ export interface SignerInput {
   name: string;
   email: string;
   role?: string;
+  phone?: string;
+  address?: string;
 }
 
 export interface AgreementInput {
   type: AgreementType;
+  templateId?: string;
   title: string;
   data: Record<string, unknown>;
   signers: SignerInput[];
 }
+
+export interface TemplateField { key: string; label: string; default?: string }
+
+export interface AgreementTemplate {
+  _id: string;
+  name: string;
+  slug: string;
+  category: AgreementType;
+  description?: string;
+  body: string;
+  fields: TemplateField[];
+  isActive: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TemplateInput {
+  name: string;
+  slug?: string;
+  category: AgreementType;
+  description?: string;
+  body: string;
+  fields: TemplateField[];
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export const getTemplates = () =>
+  api.get<{ success: boolean; templates: AgreementTemplate[] }>('/admin/agreement-templates');
+
+export const getTemplate = (id: string) =>
+  api.get<{ success: boolean; template: AgreementTemplate }>(`/admin/agreement-templates/${id}`);
+
+export const createTemplate = (data: TemplateInput) =>
+  api.post<{ success: boolean; template: AgreementTemplate }>('/admin/agreement-templates', data);
+
+export const updateTemplate = (id: string, data: Partial<TemplateInput>) =>
+  api.patch<{ success: boolean; template: AgreementTemplate }>(`/admin/agreement-templates/${id}`, data);
+
+export const deleteTemplate = (id: string) => api.delete(`/admin/agreement-templates/${id}`);
 
 export const getAgreements = () =>
   api.get<{ success: boolean; agreements: Agreement[] }>('/admin/agreements');

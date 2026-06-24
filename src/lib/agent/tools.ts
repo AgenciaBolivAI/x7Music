@@ -472,6 +472,23 @@ export const TOOLS: Record<string, AgentTool> = {
     },
   },
 
+  list_agreement_templates: {
+    roles: ['admin'],
+    description:
+      'List the editable document templates (id, name, category, merge-field keys, and whether it has a co-author split table). Pick a template_id from here before create_agreement so the generated PDF uses the correct legal body.',
+    parameters: NO_PARAMS,
+    run: async () => {
+      const { data } = await createClient().from('agreement_templates').select('id, name, category, fields, body, is_active').eq('is_active', true).order('sort_order', { ascending: true });
+      return {
+        templates: (data ?? []).map((t) => ({
+          id: t.id, name: t.name, category: t.category,
+          fields: ((t.fields as { key: string }[]) ?? []).map((f) => f.key),
+          hasSplitTable: String(t.body ?? '').includes('{{TABLA}}'),
+        })),
+      };
+    },
+  },
+
   web_research: {
     roles: ['admin'],
     description:
@@ -628,27 +645,36 @@ export const TOOLS: Record<string, AgentTool> = {
 
   create_agreement: {
     roles: ['admin'], mutates: true,
-    description: 'Create a split sheet or distribution agreement. data is the type-specific payload; signers each need name + email. Then use send_agreement to email signing links. Preview, then confirm.',
+    description: 'Create a split sheet or distribution agreement from a TEMPLATE (call list_agreement_templates first and pass its template_id so the correct legal body is used). `data` holds the template merge-field values + a writers[] array for the split table; signers each need name + email (phone/address recommended for the signature block). Then use send_agreement to email signing links. Preview, then confirm.',
     parameters: {
       type: 'object',
       properties: {
         agreement_type: { type: 'string', enum: ['split_sheet', 'distribution_agreement'] },
+        template_id: { type: 'string', description: 'id from list_agreement_templates (strongly recommended).' },
         title: { type: 'string' },
-        data: { type: 'object', description: 'split_sheet: {songTitle, artists?, producer?, effectiveDate?, recordingVersion?, isrc?, iswc?, writers:[{name, pro?, ipi?, publisher?, publisherIpi?, percentage}]}. distribution_agreement: {artistName, legalName?, address?, email?, phone?, releaseTitle?, territory?, term?, distributionFeePct?, effectiveDate?}' },
-        signers: { type: 'array', items: { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string' }, role: { type: 'string' }, artistId: { type: 'string' } }, required: ['name', 'email'] } },
+        data: { type: 'object', description: 'Merge-field values for the template (e.g. {empresa, titulo, artista, productor, fecha, isrc}) plus writers:[{name, society/pro, ipi, publisher, publisherIpi, percentage}] for the {{TABLA}} split table.' },
+        signers: { type: 'array', items: { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string' }, role: { type: 'string' }, artistId: { type: 'string' }, phone: { type: 'string' }, address: { type: 'string' } }, required: ['name', 'email'] } },
         confirm: { type: 'boolean' },
       },
       required: ['agreement_type', 'title', 'data', 'signers'],
     },
     run: async (args, caller) => {
-      const parsed = agreementCreateSchema.safeParse({ type: args.agreement_type, title: args.title, data: args.data ?? {}, signers: args.signers ?? [] });
+      const parsed = agreementCreateSchema.safeParse({ type: args.agreement_type, templateId: args.template_id, title: args.title, data: args.data ?? {}, signers: args.signers ?? [] });
       if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ') };
-      const { type, title, data, signers } = parsed.data;
-      if (args.confirm !== true) return { requires_confirmation: true, summary: `Create ${type === 'split_sheet' ? 'split sheet' : 'distribution agreement'} "${title}" with ${signers.length} signer(s).`, action: { name: 'create_agreement', args: { agreement_type: type, title, data, signers } } };
+      const { type, templateId, title, data, signers } = parsed.data;
+      if (args.confirm !== true) return { requires_confirmation: true, summary: `Create ${type === 'split_sheet' ? 'split sheet' : 'distribution agreement'} "${title}" with ${signers.length} signer(s).`, action: { name: 'create_agreement', args: { agreement_type: type, template_id: templateId, title, data, signers } } };
       const sb = createClient();
-      const { data: ag, error } = await sb.from('agreements').insert({ type, title, data, created_by: caller.userId || null }).select('id').maybeSingle();
+      let body: string | null = null;
+      let finalType = type;
+      if (templateId) {
+        const { data: tpl } = await sb.from('agreement_templates').select('body, category').eq('id', templateId).maybeSingle();
+        if (!tpl) return { error: 'Template not found.' };
+        body = tpl.body as string;
+        finalType = tpl.category as typeof type;
+      }
+      const { data: ag, error } = await sb.from('agreements').insert({ type: finalType, template_id: templateId ?? null, body, title, data, created_by: caller.userId || null }).select('id').maybeSingle();
       if (error || !ag) return { error: error?.message || 'Could not create the agreement.' };
-      const rows = signers.map((s, i) => ({ agreement_id: ag.id, artist_id: s.artistId ?? null, name: s.name, email: s.email, role: s.role ?? null, sort_order: i }));
+      const rows = signers.map((s, i) => ({ agreement_id: ag.id, artist_id: s.artistId ?? null, name: s.name, email: s.email, role: s.role ?? null, phone: s.phone ?? null, address: s.address ?? null, sort_order: i }));
       const { error: sErr } = await sb.from('agreement_signers').insert(rows);
       if (sErr) { await sb.from('agreements').delete().eq('id', ag.id); return { error: sErr.message }; }
       return { ok: true, message: `Created "${title}". Use send_agreement to email signing links.`, agreement_id: ag.id };

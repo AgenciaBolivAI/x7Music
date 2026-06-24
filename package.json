@@ -9,6 +9,7 @@
     "lint": "next lint",
     "seed:supabase": "node --env-file=.env.local --import tsx scripts/seed-supabase.ts",
     "create-admin:supabase": "node --env-file=.env.local --import tsx scripts/create-admin-supabase.ts",
+    "seed:templates": "node --env-file=.env.local --import tsx scripts/seed-templates.ts",
     "db:sql": "node --env-file=.env.local --import tsx scripts/run-sql.ts"
   },
   "dependencies": {
