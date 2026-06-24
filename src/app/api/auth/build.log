@@ -1,0 +1,8 @@
+
+> Build error occurred
+Error: > Couldn't find any `pages` or `app` directory. Please create one under the project root
+    at findPagesDir (C:\Users\celie\OneDrive\Desktop\X7Music\web\node_modules\next\dist\lib\find-pages-dir.js:42:15)
+    at C:\Users\celie\OneDrive\Desktop\X7Music\web\node_modules\next\dist\build\index.js:406:73
+    at async Span.traceAsyncFn (C:\Users\celie\OneDrive\Desktop\X7Music\web\node_modules\next\dist\trace\trace.js:154:20)
+    at async build (C:\Users\celie\OneDrive\Desktop\X7Music\web\node_modules\next\dist\build\index.js:368:9)
+EXIT=1 ===BUILD_DONE===

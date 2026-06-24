@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-brand-black text-brand-white font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-brand-red text-white font-semibold rounded-lg
+           hover:bg-brand-red-light active:bg-brand-red-dark transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-brand-red text-brand-red font-semibold rounded-lg
+           hover:bg-brand-red hover:text-white active:bg-brand-red-dark transition-colors duration-200 disabled:opacity-50;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 text-brand-gray-muted font-medium rounded-lg
+           hover:text-white hover:bg-brand-gray-light transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-brand-gray rounded-xl border border-brand-gray-light overflow-hidden;
+  }
+
+  .input {
+    @apply w-full bg-brand-gray-light border border-brand-gray-light rounded-lg px-4 py-3 text-white
+           placeholder-brand-gray-muted focus:outline-none focus:border-brand-red transition-colors duration-200;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-brand-gray-muted mb-1;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-heading font-bold text-white;
+  }
+
+  .section-subtitle {
+    @apply text-brand-gray-muted text-lg mt-3 max-w-2xl;
+  }
+
+  .badge-pending   { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-900/50 text-yellow-400; }
+  .badge-confirmed { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-900/50 text-blue-400; }
+  .badge-completed { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-900/50 text-green-400; }
+  .badge-cancelled { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-900/50 text-red-400; }
+  .badge-in_progress { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-900/50 text-purple-400; }
+  .badge-registered  { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-900/50 text-green-400; }
+  .badge-issue       { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-900/50 text-red-400; }
+  .badge-unread      { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-brand-red/20 text-brand-red; }
+  .badge-read        { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-700 text-gray-400; }
+  .badge-replied     { @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-900/50 text-green-400; }
+
+  /* Rendered TipTap HTML (blog posts / CHECKZONE articles) */
+  .rich-content h1 { @apply text-3xl font-heading font-bold text-white mt-8 mb-4; }
+  .rich-content h2 { @apply text-2xl font-heading font-bold text-white mt-8 mb-4; }
+  .rich-content h3 { @apply text-xl font-heading font-semibold text-white mt-6 mb-3; }
+  .rich-content p  { @apply text-brand-gray-muted leading-relaxed mb-4; }
+  .rich-content a  { @apply text-brand-red underline hover:text-brand-red-light; }
+  .rich-content ul { @apply list-disc pl-6 mb-4 text-brand-gray-muted space-y-1; }
+  .rich-content ol { @apply list-decimal pl-6 mb-4 text-brand-gray-muted space-y-1; }
+  .rich-content blockquote { @apply border-l-4 border-brand-red pl-4 italic text-brand-gray-muted my-6; }
+  .rich-content img { @apply rounded-xl my-6 max-w-full; }
+  .rich-content strong { @apply text-white; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #1A1A1A; }
+::-webkit-scrollbar-thumb { background: #3A3A3A; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #C0392B; }

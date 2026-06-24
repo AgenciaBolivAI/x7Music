@@ -1,0 +1,146 @@
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (102kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Compiled with warnings
+
+./node_modules/@supabase/supabase-js/dist/index.mjs
+A Node.js API is used (process.version at line: 27) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/supabase-js/dist/index.mjs
+./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+./node_modules/@supabase/ssr/dist/module/index.js
+
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/42) ...
+   Generating static pages (10/42) 
+   Generating static pages (20/42) 
+   Generating static pages (31/42) 
+ ✓ Generating static pages (42/42)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    4.61 kB         149 kB
+├ ○ /_not-found                          876 B          88.2 kB
+├ ○ /about                               2.82 kB         124 kB
+├ ○ /admin                               3.07 kB         148 kB
+├ ○ /admin/artists                       5.05 kB         141 kB
+├ ○ /admin/availability                  3.38 kB         144 kB
+├ ○ /admin/blog                          109 kB          245 kB
+├ ○ /admin/bookings                      3.38 kB         144 kB
+├ ○ /admin/brain                         3.33 kB         139 kB
+├ ○ /admin/catalog                       3.11 kB         139 kB
+├ ○ /admin/clients                       3.08 kB         139 kB
+├ ○ /admin/documents                     3.78 kB         140 kB
+├ ○ /admin/events                        4.51 kB         140 kB
+├ ○ /admin/inbox                         3.4 kB          139 kB
+├ ○ /admin/releases                      4.24 kB         140 kB
+├ ○ /admin/resources                     3.43 kB         139 kB
+├ ○ /admin/services                      3.53 kB         145 kB
+├ ○ /admin/settings                      2.22 kB         197 kB
+├ ○ /admin/split-sheets                  4.05 kB         140 kB
+├ ○ /admin/subscribers                   4.98 kB         141 kB
+├ ƒ /api/admin/brain                     0 B                0 B
+├ ƒ /api/admin/brain/[id]                0 B                0 B
+├ ƒ /api/admin/clients                   0 B                0 B
+├ ƒ /api/admin/clients/[id]              0 B                0 B
+├ ƒ /api/admin/resources                 0 B                0 B
+├ ƒ /api/admin/resources/[id]            0 B                0 B
+├ ƒ /api/admin/stats                     0 B                0 B
+├ ƒ /api/agent/chat                      0 B                0 B
+├ ƒ /api/agent/execute                   0 B                0 B
+├ ƒ /api/artists                         0 B                0 B
+├ ƒ /api/artists/[id]                    0 B                0 B
+├ ƒ /api/artists/featured                0 B                0 B
+├ ƒ /api/artists/slug/[slug]             0 B                0 B
+├ ƒ /api/auth/change-password            0 B                0 B
+├ ƒ /api/auth/me                         0 B                0 B
+├ ƒ /api/availability/block              0 B                0 B
+├ ƒ /api/availability/block/[id]         0 B                0 B
+├ ƒ /api/availability/calendar           0 B                0 B
+├ ƒ /api/availability/schedule           0 B                0 B
+├ ƒ /api/availability/slots              0 B                0 B
+├ ƒ /api/blog                            0 B                0 B
+├ ƒ /api/blog/[slug]                     0 B                0 B
+├ ƒ /api/bookings                        0 B                0 B
+├ ƒ /api/bookings/[id]                   0 B                0 B
+├ ƒ /api/bookings/[id]/admin-notes       0 B                0 B
+├ ƒ /api/bookings/[id]/status            0 B                0 B
+├ ƒ /api/bookings/my                     0 B                0 B
+├ ƒ /api/catalog                         0 B                0 B
+├ ƒ /api/catalog/[id]                    0 B                0 B
+├ ƒ /api/catalog/my                      0 B                0 B
+├ ƒ /api/documents                       0 B                0 B
+├ ƒ /api/documents/[id]                  0 B                0 B
+├ ƒ /api/documents/[id]/download         0 B                0 B
+├ ƒ /api/documents/my                    0 B                0 B
+├ ƒ /api/documents/upload                0 B                0 B
+├ ƒ /api/events                          0 B                0 B
+├ ƒ /api/events/[id]                     0 B                0 B
+├ ƒ /api/events/past                     0 B                0 B
+├ ƒ /api/messages                        0 B                0 B
+├ ƒ /api/messages/[id]                   0 B                0 B
+├ ƒ /api/messages/[id]/read              0 B                0 B
+├ ƒ /api/messages/[id]/reply             0 B                0 B
+├ ƒ /api/messages/unread-count           0 B                0 B
+├ ƒ /api/newsletter                      0 B                0 B
+├ ƒ /api/newsletter/[id]                 0 B                0 B
+├ ƒ /api/newsletter/broadcast            0 B                0 B
+├ ƒ /api/newsletter/campaigns            0 B                0 B
+├ ƒ /api/newsletter/export               0 B                0 B
+├ ƒ /api/newsletter/subscribe            0 B                0 B
+├ ƒ /api/newsletter/unsubscribe          0 B                0 B
+├ ƒ /api/payments/session/[sessionId]    0 B                0 B
+├ ƒ /api/payments/webhook                0 B                0 B
+├ ƒ /api/releases                        0 B                0 B
+├ ƒ /api/releases/[id]                   0 B                0 B
+├ ƒ /api/releases/featured               0 B                0 B
+├ ƒ /api/resources                       0 B                0 B
+├ ƒ /api/resources/request               0 B                0 B
+├ ƒ /api/services                        0 B                0 B
+├ ƒ /api/services/[id]                   0 B                0 B
+├ ƒ /api/split-sheets                    0 B                0 B
+├ ƒ /api/split-sheets/[id]               0 B                0 B
+├ ƒ /api/split-sheets/[id]/pdf           0 B                0 B
+├ ○ /artist                              3.27 kB         148 kB
+├ ƒ /artist/[slug]                       4 kB            149 kB
+├ ƒ /auth/callback                       0 B                0 B
+├ ○ /book                                5.93 kB         214 kB
+├ ○ /book/success                        2.39 kB         147 kB
+├ ○ /checkzone                           2.92 kB         148 kB
+├ ƒ /checkzone/[slug]                    2.59 kB         147 kB
+├ ○ /contact                             3.13 kB         139 kB
+├ ○ /events                              3.31 kB         139 kB
+├ ○ /forgot-password                     1.04 kB         193 kB
+├ ○ /login                               2.91 kB         195 kB
+├ ○ /music                               3.6 kB          140 kB
+├ ○ /nextep                              2.72 kB         147 kB
+├ ○ /portal                              3.26 kB         206 kB
+├ ○ /portal/bookings                     2.8 kB          153 kB
+├ ○ /portal/catalog                      2.23 kB         138 kB
+├ ○ /portal/documents                    2.22 kB         138 kB
+├ ○ /portal/profile                      2.19 kB         196 kB
+├ ○ /publishing                          3.14 kB         124 kB
+├ ○ /register                            3.15 kB         195 kB
+├ ○ /reset-password                      1.02 kB         184 kB
+├ ○ /resources                           3.11 kB         139 kB
+└ ○ /x7-meeting                          3.46 kB         148 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/2117-844758f85867478e.js      31.7 kB
+  ├ chunks/fd9d1056-9417768a20c10f53.js  53.6 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+ƒ Middleware                             82.8 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+EXIT=0 ===BUILD_DONE===
